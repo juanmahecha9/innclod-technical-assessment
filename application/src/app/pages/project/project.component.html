@@ -1,0 +1,307 @@
+<main class="flex flex-col items-center justify-center min-h-screen p-4">
+  <!-- Texto de introducción -->
+  <section class="bg-white p-6 rounded-lg shadow-md max-w-2xl text-center">
+    <h2 class="text-2xl font-bold mb-4">Projects {{projects.length}}</h2>
+    <button (click)="openDialog('add')">
+      <span>Add new task</span>
+    </button>
+    <div class="gap-2">
+      @for(project of projects; track project.id) {
+
+      <a
+        class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 mt-2"
+      >
+        <div class="flex justify-end">
+          <button
+            class="text-red-500 font-bold py-2 px-4 rounded"
+            (click)="deleteProject($index)"
+          >
+            Delete
+          </button>
+        </div>
+        <h3
+          class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+        >
+          {{project.name}}
+        </h3>
+        <h5
+          class="mb-2 text-1xl font-bold tracking-tight text-gray-900 dark:text-white"
+        >
+          ID: {{project.id}}
+        </h5>
+        <h5
+          class="mb-2 text-1xl font-bold tracking-tight text-gray-900 dark:text-white"
+        >
+          Email: {{project.email}}
+        </h5>
+        <div class="grid grid-cols-2 gap 4">
+          <p class="font-normal text-gray-700 dark:text-gray-400">
+            Catch Phrase: {{project.company.catchPhrase}}
+          </p>
+          <p class="font-normal text-gray-700 dark:text-gray-400">
+            Website: {{project.website}}
+          </p>
+          <p class="font-normal text-gray-700 dark:text-gray-400">
+            City: {{project.address.city}}, Street: {{project.address.street}}
+            ZIP: {{project.address.zipcode}}
+          </p>
+          <p class="font-normal text-gray-700 dark:text-gray-400">
+            Username: {{project.username}}
+          </p>
+        </div>
+        <div class="flex justify-center items-center">
+          <button
+            class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition duration-300"
+            (click)="openDialog('edit', project, $index)"
+          >
+            Edit Project
+          </button>
+        </div>
+      </a>
+
+      }
+    </div>
+  </section>
+
+  <div
+    *ngIf="visible"
+    class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50"
+  >
+    <div class="relative p-4 w-full max-w-2xl max-h-full overflow-auto">
+      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <!-- Modal header -->
+        <div
+          class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600"
+        >
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+            {{modalTitle}}
+          </h3>
+          <button
+            type="button"
+            class="end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            data-modal-hide="authentication-modal"
+            (click)="visible = false"
+          >
+            <svg
+              class="w-3 h-3"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 14"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+              />
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
+        </div>
+        <!-- Modal body -->
+        <div class="p-4 md:p-5 max-h-[70vh] overflow-y-auto">
+          <form
+            [formGroup]="form"
+            class="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto"
+          >
+            <!-- Sección de información personal -->
+            <h2 class="text-2xl font-semibold mb-4">Información Personal</h2>
+            <div class="mb-4">
+              <label for="name" class="block text-gray-700"
+                >Nombre <span class="text-red-500">*</span></label
+              >
+              <input
+                id="name"
+                type="text"
+                formControlName="name"
+                class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-500"
+              />
+            </div>
+
+            <div class="mb-4">
+              <label for="username" class="block text-gray-700"
+                >Nombre de usuario <span class="text-red-500">*</span></label
+              >
+              <input
+                id="username"
+                type="text"
+                formControlName="username"
+                class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-500"
+              />
+            </div>
+
+            <div class="mb-4">
+              <label for="email" class="block text-gray-700"
+                >Correo electrónico <span class="text-red-500">*</span></label
+              >
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-500"
+              />
+            </div>
+
+            <!-- Sección de dirección -->
+            <h2 class="text-2xl font-semibold mb-4">Dirección</h2>
+
+            <div class="mb-4">
+              <label for="street" class="block text-gray-700"
+                >Calle <span class="text-red-500">*</span></label
+              >
+              <input
+                id="street"
+                type="text"
+                formControlName="street"
+                class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-500"
+              />
+            </div>
+
+            <div class="mb-4">
+              <label for="suite" class="block text-gray-700">Suite</label>
+              <input
+                id="suite"
+                type="text"
+                formControlName="suite"
+                class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-500"
+              />
+            </div>
+
+            <div class="mb-4">
+              <label for="city" class="block text-gray-700"
+                >Ciudad <span class="text-red-500">*</span></label
+              >
+              <input
+                id="city"
+                type="text"
+                formControlName="city"
+                class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-500"
+              />
+            </div>
+
+            <div class="mb-4">
+              <label for="zipcode" class="block text-gray-700"
+                >Código postal <span class="text-red-500">*</span></label
+              >
+              <input
+                id="zipcode"
+                type="text"
+                formControlName="zipcode"
+                class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-500"
+              />
+            </div>
+
+            <!-- Sección de geolocalización -->
+            <h2 class="text-2xl font-semibold mb-4">Geolocalización</h2>
+
+            <div class="mb-4">
+              <label for="lat" class="block text-gray-700"
+                >Latitud <span class="text-red-500">*</span></label
+              >
+              <input
+                id="lat"
+                type="text"
+                formControlName="lat"
+                class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-500"
+              />
+            </div>
+
+            <div class="mb-4">
+              <label for="lng" class="block text-gray-700"
+                >Longitud <span class="text-red-500">*</span></label
+              >
+              <input
+                id="lng"
+                type="text"
+                formControlName="lng"
+                class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-500"
+              />
+            </div>
+
+            <!-- Sección de contacto -->
+            <h2 class="text-2xl font-semibold mb-4">Contacto</h2>
+
+            <div class="mb-4">
+              <label for="phone" class="block text-gray-700"
+                >Teléfono <span class="text-red-500">*</span></label
+              >
+              <input
+                id="phone"
+                type="text"
+                formControlName="phone"
+                class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-500"
+              />
+            </div>
+
+            <div class="mb-4">
+              <label for="website" class="block text-gray-700">Sitio web</label>
+              <input
+                id="website"
+                type="text"
+                formControlName="website"
+                class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-500"
+              />
+            </div>
+
+            <!-- Sección de compañía -->
+            <h2 class="text-2xl font-semibold mb-4">Compañía</h2>
+
+            <div class="mb-4">
+              <label for="companyName" class="block text-gray-700"
+                >Nombre de la compañía
+                <span class="text-red-500">*</span></label
+              >
+              <input
+                id="companyName"
+                type="text"
+                formControlName="companyName"
+                class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-500"
+              />
+            </div>
+
+            <div class="mb-4">
+              <label for="catchPhrase" class="block text-gray-700"
+                >Eslogan</label
+              >
+              <input
+                id="catchPhrase"
+                type="text"
+                formControlName="catchPhrase"
+                class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-500"
+              />
+            </div>
+
+            <div class="mb-4">
+              <label for="bs" class="block text-gray-700">BS</label>
+              <input
+                id="bs"
+                type="text"
+                formControlName="bs"
+                class="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-500"
+              />
+            </div>
+
+            <button
+              *ngIf="!editButton"
+              type="button"
+              class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              (click)="addProject()"
+            >
+              Save
+            </button>
+            <button
+              *ngIf="editButton"
+              type="button"
+              class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              (click)="updateProject()"
+            >
+              Update
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
